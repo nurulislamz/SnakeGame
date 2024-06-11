@@ -1,5 +1,4 @@
-﻿using SnakeGame.Settings;
-using System.Reflection.Metadata.Ecma335;
+﻿using System.Reflection.Metadata.Ecma335;
 
 namespace SnakeGame.Menu {
     public struct MenuItems

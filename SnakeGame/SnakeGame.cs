@@ -15,22 +15,24 @@ namespace SnakeGame
         {
             Menus.MainMenu();
 
+            Exception? exception = null;
+
+            char[] DirectionChars = ['^', 'v', '<', '>',];
+
             int velocity = GameSettings.velocity;
-            TimeSpan sleep = TimeSpan.FromMilliseconds(velocity);
+            TimeSpan sleep = GameSettings._sleep;
+
             int width = GameSettings.width;
             int height = GameSettings.height;
-
-            char[] DirectionChars = ['w', 'a', 's', 'd'];
-
+            
             Tile[,] map = new Tile[width, height];
             Direction? direction = null;
-
-
             Queue<(int X, int Y)> snake = new();
             (int X, int Y) = (width / 2, height / 2);
-
             bool closeRequested = false;
 
+            try
+            {
                 Console.CursorVisible = false;
                 Console.Clear();
                 snake.Enqueue((X, Y));
@@ -38,20 +40,12 @@ namespace SnakeGame
                 PositionFood();
                 Console.SetCursorPosition(X, Y);
                 Console.Write('@');
-
                 while (!direction.HasValue && !closeRequested)
                 {
                     GetDirection();
                 }
                 while (!closeRequested)
                 {
-                    if (Console.WindowWidth != width || Console.WindowHeight != height)
-                    {
-                        Console.Clear();
-                        Console.Write("Console was resized. Snake game has ended.");
-                        return;
-                    }
-
                     switch (direction)
                     {
                         case Direction.Up: Y--; break;
@@ -59,18 +53,17 @@ namespace SnakeGame
                         case Direction.Left: X--; break;
                         case Direction.Right: X++; break;
                     }
-
-                    if (X < 0 || X >= width || Y < 0 || Y >= height || map[X, Y] is Tile.Snake)
+                    if (X < 0 || X >= width ||
+                        Y < 0 || Y >= height ||
+                        map[X, Y] is Tile.Snake)
                     {
                         Console.Clear();
                         Console.Write("Game Over. Score: " + (snake.Count - 1) + ".");
                         return;
                     }
-
                     Console.SetCursorPosition(X, Y);
                     Console.Write(DirectionChars[(int)direction!]);
                     snake.Enqueue((X, Y));
-
                     if (map[X, Y] is Tile.Food)
                     {
                         PositionFood();
@@ -82,7 +75,6 @@ namespace SnakeGame
                         Console.SetCursorPosition(x, y);
                         Console.Write(' ');
                     }
-
                     map[X, Y] = Tile.Snake;
                     if (Console.KeyAvailable)
                     {
@@ -90,9 +82,21 @@ namespace SnakeGame
                     }
                     System.Threading.Thread.Sleep(sleep);
                 }
-
+            }
+            catch (Exception e)
+            {
+                exception = e;
+                throw;
+            }
+            finally
+            {
+                Console.CursorVisible = true;
+                Console.Clear();
+                Console.WriteLine(exception?.ToString() ?? "Snake was closed.");
+            }
 
             void GetDirection()
+            // takes direction from arrow keys
             {
                 switch (Console.ReadKey(true).Key)
                 {
@@ -124,34 +128,20 @@ namespace SnakeGame
                 Console.Write('+');
             }
         }
-
+        
         enum Direction
         {
-            Up = 0,
-            Down = 1,
-            Left = 2,
-            Right = 3,
-        }
+                Up = 0,
+                Down = 1,
+                Left = 2,
+                Right = 3,
+        }   
+
         enum Tile
         {
-            Open,
+            Open = 0,
             Snake,
             Food,
         }
-
-
-        // create a console window
-
-        // display a menu
-
-        // read inputs 
-
-        // etc
-
-        // do it all in one file , no best practises allowed
-
-
-
     }
-
 }
