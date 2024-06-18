@@ -15,24 +15,20 @@ namespace SnakeGame
         {
             Menus.MainMenu();
 
-            Exception? exception = null;
-
-            char[] DirectionChars = ['^', 'v', '<', '>',];
-
             int velocity = GameSettings.velocity;
-            TimeSpan sleep = GameSettings._sleep;
+            TimeSpan sleep = GameSettings.sleepDuration;
 
             int width = GameSettings.width;
             int height = GameSettings.height;
-            
+
+            char[] DirectionChars = ['^', 'v', '<', '>',];
+
             Tile[,] map = new Tile[width, height];
             Direction? direction = null;
             Queue<(int X, int Y)> snake = new();
             (int X, int Y) = (width / 2, height / 2);
             bool closeRequested = false;
 
-            try
-            {
                 Console.CursorVisible = false;
                 Console.Clear();
                 snake.Enqueue((X, Y));
@@ -82,18 +78,9 @@ namespace SnakeGame
                     }
                     System.Threading.Thread.Sleep(sleep);
                 }
-            }
-            catch (Exception e)
-            {
-                exception = e;
-                throw;
-            }
-            finally
-            {
-                Console.CursorVisible = true;
-                Console.Clear();
-                Console.WriteLine(exception?.ToString() ?? "Snake was closed.");
-            }
+            
+
+            
 
             void GetDirection()
             // takes direction from arrow keys
@@ -129,6 +116,7 @@ namespace SnakeGame
             }
         }
         
+
         enum Direction
         {
                 Up = 0,

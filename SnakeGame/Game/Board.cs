@@ -8,13 +8,13 @@ using SnakeGame.Menu;
 namespace SnakeGame
 {
     public class Board
-    { 
-    
+    {
+
         private Tile[,] board;
 
-        public Board() 
+        public Board()
         {
-            board =  new Tile[GameSettings.width, GameSettings.height];
+            board = new Tile[GameSettings.width, GameSettings.height];
             Initialize();
         }
 
@@ -33,7 +33,7 @@ namespace SnakeGame
         {
             List<(int X, int Y)> openSpaces = new List<(int X, int Y)>();
 
-            for (int i = 0; i < GameSettings.width; i++) 
+            for (int i = 0; i < GameSettings.width; i++)
             {
                 for (int j = 0; j < GameSettings.height; j++)
                 {
@@ -53,11 +53,5 @@ namespace SnakeGame
                 Console.Write('+');
             }
         }
-
-        public Tile this[int x, int y]
-        { get { return board[x, y];} 
-          set { board[x, y] = value; }
-        }
-
     }
 }
