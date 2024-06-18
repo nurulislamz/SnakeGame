@@ -7,12 +7,12 @@ using SnakeGame.Menu;
  
 namespace SnakeGame
 {
-    public class Board
+    public class Map 
     {
 
-        private Tile[,] board;
+        public Tile[,] board;
 
-        public Board()
+        public Map()
         {
             board = new Tile[GameSettings.width, GameSettings.height];
             Initialize();

@@ -4,20 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SnakeGame;
-using SnakeGame;
 
-namespace SnakeGame.Snake
+namespace SnakeGame
 {
-    public class Snake
+    public static class Snakee
     {
-        Queue<(int, int)> snake { get; set; }
-        Direction? direction { get; set; }
+        public static Queue<(int, int)> snake { get; private set; } = new Queue<(int, int)>();
+        public static Direction? direction { get; set; } = null;
 
-        public Snake()
-        {
-            Queue<(int, int)> snake = new Queue<(int, int)>();
-            direction = null;
-        }
 
     }
 }

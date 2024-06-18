@@ -12,7 +12,7 @@ namespace SnakeGame.Game
      
         public GameLoop() 
         {
-            Board board = new Board();
+            Map board = new Map();
             Direction? direction = null;
             Queue<(int X, int Y)> snake = new();
             (int X, int Y) = (GameSettings.width / 2, GameSettings.height / 2);

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SnakeGame.Menu;
 using SnakeGame;
+using SnakeGame.Snake;
 
 
 namespace SnakeGame
@@ -23,7 +24,10 @@ namespace SnakeGame
 
             char[] DirectionChars = ['^', 'v', '<', '>',];
 
-            Tile[,] map = new Tile[width, height];
+  //          Map map = new Map();
+    //        var board = map.board;
+
+            Tile[,] board = new Tile[width, height];
             Direction? direction = null;
             Queue<(int X, int Y)> snake = new();
             (int X, int Y) = (width / 2, height / 2);
@@ -32,7 +36,7 @@ namespace SnakeGame
                 Console.CursorVisible = false;
                 Console.Clear();
                 snake.Enqueue((X, Y));
-                map[X, Y] = Tile.Snake;
+                board[X, Y] = Tile.Snake;
                 PositionFood();
                 Console.SetCursorPosition(X, Y);
                 Console.Write('@');
@@ -51,7 +55,7 @@ namespace SnakeGame
                     }
                     if (X < 0 || X >= width ||
                         Y < 0 || Y >= height ||
-                        map[X, Y] is Tile.Snake)
+                        board[X, Y] is Tile.Snake)
                     {
                         Console.Clear();
                         Console.Write("Game Over. Score: " + (snake.Count - 1) + ".");
@@ -60,18 +64,18 @@ namespace SnakeGame
                     Console.SetCursorPosition(X, Y);
                     Console.Write(DirectionChars[(int)direction!]);
                     snake.Enqueue((X, Y));
-                    if (map[X, Y] is Tile.Food)
+                    if (board[X, Y] is Tile.Food)
                     {
                         PositionFood();
                     }
                     else
                     {
                         (int x, int y) = snake.Dequeue();
-                        map[x, y] = Tile.Open;
+                        board[x, y] = Tile.Open;
                         Console.SetCursorPosition(x, y);
                         Console.Write(' ');
                     }
-                    map[X, Y] = Tile.Snake;
+                    board[X, Y] = Tile.Snake;
                     if (Console.KeyAvailable)
                     {
                         GetDirection();
@@ -102,7 +106,7 @@ namespace SnakeGame
                 {
                     for (int j = 0; j < height; j++)
                     {
-                        if (map[i, j] is Tile.Open)
+                        if (board[i, j] is Tile.Open)
                         {
                             possibleCoordinates.Add((i, j));
                         }
@@ -110,7 +114,7 @@ namespace SnakeGame
                 }
                 int index = Random.Shared.Next(possibleCoordinates.Count);
                 (int X, int Y) = possibleCoordinates[index];
-                map[X, Y] = Tile.Food;
+                board[X, Y] = Tile.Food;
                 Console.SetCursorPosition(X, Y);
                 Console.Write('+');
             }
